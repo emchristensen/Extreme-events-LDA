@@ -172,7 +172,7 @@ plot_community_composition = function(composition,topic_order=1:dim(composition)
   par(mfrow=c(1,topics))
   j=1
   for (i in topic_order) {
-    x = barplot(composition[i,],ylim=ylimits,col=colors[i],main=paste('Community',j),las=2)
+    x = barplot(composition[i,],ylim=ylimits,col=colors[i],main=paste('Community-type',j),las=2)
     j=j+1
   }
   par(mfrow=c(1,1))
@@ -215,7 +215,7 @@ plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbP
       scale_x_discrete(name='') +
       scale_y_continuous(name=ylabel,limits = ylim) +
       geom_hline(yintercept = 0)  +
-      ggtitle(paste('Community',j))
+      ggtitle(paste('Community-type',j))
 
     p[[j]] <- x
     j=j+1
