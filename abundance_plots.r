@@ -1,12 +1,13 @@
 library(fitdistrplus)
 library(stats)
 library(dplyr)
+library(RCurl)
 # scripts for making supporting figures in the extreme events/ LDA project
 
 # =========================================
 # Annual average NDVI plot
 
-ndvi = read.csv('../../../Portal/PortalData/NDVI/monthly_NDVI.csv',as.is=T)
+ndvi = read.csv(text=getURL('https://raw.githubusercontent.com/weecology/PortalData/master/NDVI/monthly_NDVI.csv'),as.is=T)
 ndvi$date = as.Date(paste(ndvi$date,"-15", sep=""), format="%Y-%m-%d")
 ndvi$year = format(as.Date(ndvi$date, format="%Y-%m-%d"),"%Y")
 annual_ndvi = aggregate(NDVI ~ year, ndvi, mean )
@@ -17,11 +18,13 @@ plot(annual_ndvi$year,annual_ndvi$NDVI, type='b')
 
 # total abundance
 dat = read.csv('Rodent_table_dat.csv',na.strings = '',as.is=T)
-rdat = read.csv('../../../Portal/PortalData/Rodents/Portal_rodent.csv',as.is=T)
-trappingdat = read.csv('../../../Portal/PortalData/Rodents/Portal_rodent_trapping.csv',as.is=T,na.strings = '')
+rdat = read.csv(text=getURL("https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent.csv"),
+                na.strings=c(""), colClasses=c('tag'='character'), stringsAsFactors = FALSE)
+trappingdat = read.csv(text=getURL("https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/Portal_rodent_trapping.csv"),
+                       na.strings=c(""), as.is=T, stringsAsFactors = FALSE)
 trapdat = aggregate(trappingdat$sampled,by=list(period=trappingdat$period),FUN=sum)
 fullcensus = trapdat[trapdat$x>20,]
-perioddates = read.csv('../../../Portal/PortalData/Rodents/moon_dates.csv',as.is=T,na.strings = '')
+perioddates = read.csv(text=getURL('https://raw.githubusercontent.com/weecology/PortalData/master/Rodents/moon_dates.csv'),as.is=T,na.strings = '')
 perioddates$censusdate = as.Date(perioddates$censusdate)
 fullcensus = merge(fullcensus,perioddates)
 
@@ -43,7 +46,7 @@ plot(abund_dat$censusdate,abund_dat$n,xlab='',ylab='Total Abundundance',pch=19,y
 rect(xleft = as.Date('1999-07-01'),xright = as.Date('1999-10-01'),ytop = 250,ybottom=0,col='gray',border=NA)
 rect(xleft = as.Date('1983-08-01'),xright = as.Date('1983-11-01'),ytop = 250,ybottom=0,col='gray',border=NA)
 rect(xleft = as.Date('1993-09-01'),xright = as.Date('1994-10-01'),ytop = 250,ybottom=0,col='gray',border=NA)
-rect(xleft = as.Date('2009-01-01'),xright = as.Date('2009-12-31'),ytop = 250,ybottom=0,col='green',border=NA)
+rect(xleft = as.Date('2009-01-01'),xright = as.Date('2009-12-31'),ytop = 250,ybottom=0,col='gray',border=NA)
 lines(abund_dat$censusdate,abund_dat$n)
 points(abund_dat$censusdate,abund_dat$n,pch=16,col=as.factor(abund_dat$extreme))
 abline(h=mean(abund_dat$n))
