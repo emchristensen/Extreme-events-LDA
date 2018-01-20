@@ -2,9 +2,9 @@ library(RCurl)
 library(dplyr)
 
 
-#' Create rodent species table
+#' @title Create rodent species table
 #'
-#' Processes rodent capture data so it can be used for LDA analysis
+#' @description Processes rodent capture data so it can be used for LDA analysis
 #' 
 #'
 #' @param period_first first trapping period desired
