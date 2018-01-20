@@ -115,7 +115,7 @@ grid.arrange(g1,g2,g3,nrow=1)
 
 # plot community compositions (betas)
 beta1 = community_composition(ldamodel1)
-spcomp_1 = plot_community_composition_gg(beta1,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)])
+spcomp_1 = plot_community_composition_gg(beta1,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
 (figure_spcomp_s1 <- multi_panel_figure(
   width = c(40,40),
   height = c(40,10),
@@ -132,7 +132,7 @@ plot_community_composition(beta1)
 
 
 beta2 = community_composition(ldamodel2)
-spcomp_2 = plot_community_composition_gg(beta2,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)])
+spcomp_2 = plot_community_composition_gg(beta2,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
 (figure_spcomp_s2 <- multi_panel_figure(
   width = c(40,40),
   height = c(40,10),
@@ -147,7 +147,7 @@ figure_spcomp_s2 %<>% fill_panel(
 #figure_spcomp_s2
 
 beta3 = community_composition(ldamodel3)
-spcomp_3 = plot_community_composition_gg(beta3,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)])
+spcomp_3 = plot_community_composition_gg(beta3,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
 (figure_spcomp_s3 <- multi_panel_figure(
   width = c(40,40),
   height = c(40,10),
@@ -260,7 +260,8 @@ figure
 # separate figures for model inputs and model outputs
 (figure_inputs <- multi_panel_figure(
   width = c(40,40,40,40,40,40),
-  height = c(35,10,40)))
+  height = c(35,10,40),
+  panel_label_type = 'lower-alpha'))
 figure_inputs %<>% fill_panel(
   figure_spcomp,
   row = 1, column = 2:5)
@@ -277,7 +278,8 @@ figure_inputs
 
 (figure_outputs <- multi_panel_figure(
   width = c(40,40,40,40,40,40),
-  height = c(40,40,40)))
+  height = c(40,40,40),
+  panel_label_type = 'lower-alpha'))
 figure_outputs %<>% fill_panel(
   figure_spcomp_s1,
   row = 1, column = 1:2)
