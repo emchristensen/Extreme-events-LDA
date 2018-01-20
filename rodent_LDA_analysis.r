@@ -287,7 +287,6 @@ figure_spcomp5
 (figure_s4 <- multi_panel_figure(
   width = c(70,70,70,70),
   height = c(60,60),
-  column_spacing = 0,
   panel_label_type = "lower-alpha"))
 figure_s4 %<>% fill_panel(
   figure_spcomp5,
