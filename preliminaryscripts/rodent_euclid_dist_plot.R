@@ -13,7 +13,7 @@ trapdat = read.csv('C:/Users/EC/Desktop/git/PortalData/Rodents/Portal_rodent_tra
 allplots = aggregate(trapdat$sampled,by=list(period=trapdat$period),FUN=sum) %>% filter(x>21)
 
 # create table of species abundances
-absabund = rdat %>% filter(period>0, period< 437, period %in% allplots$period, species %in% granivores, plot %in% c(2,4,8,11,12,14,17,22)) %>% select(period,species) %>% table()
+absabund = rdat %>% filter(period>0, period< 437, period %in% allplots$period, species %in% granivores, plot %in% c(2,4,8,11,12,14,17,22)) %>% select(period,species) #%>% table()
 
 # load trapping date data
 pdat = read.csv('C:/Users/EC/Desktop/git/PortalData/Rodents/moon_dates.csv',stringsAsFactors = F)
