@@ -4,10 +4,10 @@ library(RCurl)
 library(dplyr)
 library(ggplot2)
 
-ndvi = read.csv(text=getURL("https://raw.githubusercontent.com/weecology/PortalData/master/NDVI/monthly_NDVI.csv"),
+ndvi = read.csv('Monthly_Landsat_NDVI.csv',
                    na.strings=c(""), stringsAsFactors = FALSE)
 
-ndvi$date = as.Date(paste(ndvi$date,'-15',sep=''),format='%Y-%m-%d')
+ndvi$Date = as.Date(ndvi$Date,format='%Y-%M')
 ndvi$NDVI = as.numeric(ndvi$NDVI)
 ndvi$year = format(ndvi$date,'%Y') %>% as.numeric()
 
@@ -16,13 +16,13 @@ lines(ndvi$date,ndvi$NDVI)
 
 
 # ===============
-# yearly avg - from 1993 on there are no gaps in data
+# yearly avg - from 1984 there are >12 images per year (should go back and remove excessively cloudy images too)
 
-ndviyr = aggregate(ndvi$NDVI,by=list(year = ndvi$year),FUN=mean) %>% filter(year>1992)
+ndviyr = aggregate(ndvi$NDVI,by=list(year = ndvi$year),FUN=mean,na.rm=T) %>% filter(year>1983)
 
 
 # ggplot version - with long term mean
-ggplot(ndviyr,aes(x=year,y=x)) +
+ggplot(ndviyr,aes(x=as.integer(year),y=x)) +
   geom_line(size=1.5) +  
   geom_point(size=3) +
   geom_hline(yintercept = mean(ndviyr$x),linetype=2) +
