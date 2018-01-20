@@ -188,7 +188,7 @@ plot_community_composition = function(composition,topic_order=1:dim(composition)
 #' 
 #' 
 #' 
-plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbPalette) {
+plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbPalette,title=T) {
   topics = dim(composition)[1]
   community = c()
   for (j in 1:topics) {community=append(community,rep(j,length(composition[j,])))}
@@ -215,7 +215,7 @@ plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbP
       scale_x_discrete(name='') +
       scale_y_continuous(name=ylabel,limits = ylim) +
       geom_hline(yintercept = 0)  +
-      ggtitle(paste('Community-type',j))
+      if (title==T) {ggtitle(paste('Community-type',j))} else {ggtitle('')}
 
     p[[j]] <- x
     j=j+1
