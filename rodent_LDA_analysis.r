@@ -125,8 +125,13 @@ mean(cp_results_rodent5$saved_lls * -2)+ 2*(3*(ntopics-1)*(5+1)+(5))
 
 # plot community compositions
 beta1 = community_composition(ldamodel)
+# change column names to modern taxonomy of species
+colnames(beta1)[colnames(beta1)=='PB'] <- 'CB'
+colnames(beta1)[colnames(beta1)=='PH'] <- 'CH'
+colnames(beta1)[colnames(beta1)=='PP'] <- 'CP'
+colnames(beta1)[colnames(beta1)=='PI'] <- 'CI'
 # put columns in order of largest species to smallest
-composition = beta1[,c('NA','DS','SH','SF','SO','DO','DM','PB','PH','OL','OT','PL','PM','PE','PP','PI','RF','RM','RO','BA','PF')]
+composition = beta1[,c('NA','DS','SH','SF','SO','DO','DM','CB','CH','OL','OT','PL','PM','PE','CP','CI','RF','RM','RO','BA','PF')]
 plot_community_composition(composition,c(3,4,1,2))
 
 
@@ -180,7 +185,7 @@ cpts = find_changepoint_location(cp_results_rodent4)
 cpt_plot = get_ll_non_memoized_plot(ldamodel,x,cpts,make_plot=T,weights=rep(1,length(year_continuous)))
 
 
-# Figure 3 -- community composition, LDA model, changepoint histogram, changepoint timeseries
+# Figure 1 -- community composition, LDA model, changepoint histogram, changepoint timeseries
 (figure <- multi_panel_figure(
   width = c(70,70,70,70),
   height = c(60,60,60,60),
@@ -209,7 +214,12 @@ figure
 ldamodel3topic = LDA(dat,3, control = list(seed = 46),method='VEM')
 cc3 = plot_component_communities(ldamodel3topic,3,dates)
 beta13topic = community_composition(ldamodel3topic)
-composition3 = beta13topic[,c('NA','DS','SH','SF','SO','DO','DM','PB','PH','OL','OT','PL','PM','PE','PP','PI','RF','RM','RO','BA','PF')]
+# change column names to modern taxonomy of species
+colnames(beta13topic)[colnames(beta13topic)=='PB'] <- 'CB'
+colnames(beta13topic)[colnames(beta13topic)=='PH'] <- 'CH'
+colnames(beta13topic)[colnames(beta13topic)=='PP'] <- 'CP'
+colnames(beta13topic)[colnames(beta13topic)=='PI'] <- 'CI'
+composition3 = beta13topic[,c('NA','DS','SH','SF','SO','DO','DM','CB','CH','OL','OT','PL','PM','PE','CP','CI','RF','RM','RO','BA','PF')]
 P3topic = plot_community_composition_gg(composition3,c(3,2,1),c(0,.8))
 
 (figure_spcomp3 <- multi_panel_figure(
@@ -259,7 +269,12 @@ figure_s3
 ldamodel5topic = LDA(dat,5, control = list(seed = 110),method='VEM')
 cc5 = plot_component_communities(ldamodel5topic,5,dates,'',c(1,5,3,4,2))
 beta15topic = community_composition(ldamodel5topic)
-composition5 = beta15topic[c(1,5,3,4,2),c('NA','DS','SH','SF','SO','DO','DM','PB','PH','OL','OT','PL','PM','PE','PP','PI','RF','RM','RO','BA','PF')]
+# change column names to modern taxonomy of species
+colnames(beta15topic)[colnames(beta15topic)=='PB'] <- 'CB'
+colnames(beta15topic)[colnames(beta15topic)=='PH'] <- 'CH'
+colnames(beta15topic)[colnames(beta15topic)=='PP'] <- 'CP'
+colnames(beta15topic)[colnames(beta15topic)=='PI'] <- 'CI'
+composition5 = beta15topic[c(1,5,3,4,2),c('NA','DS','SH','SF','SO','DO','DM','CB','CH','OL','OT','PL','PM','PE','CP','CI','RF','RM','RO','BA','PF')]
 P5topic = plot_community_composition_gg(composition5,c(3,4,5,2,1),c(0,.8))
 
 (figure_spcomp5 <- multi_panel_figure(
