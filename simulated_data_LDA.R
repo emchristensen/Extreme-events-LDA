@@ -219,10 +219,10 @@ figure %<>% fill_panel(
   figure_spcomp,
   row = 1, column = 2:5)
 figure %<>% fill_panel(
-  g_1,
+  g_2,
   row = 2, column = 1:2)
 figure %<>% fill_panel(
-  g_2,
+  g_1,
   row = 2, column = 3:4)
 figure %<>% fill_panel(
   g_3,
@@ -309,3 +309,56 @@ figure_outputs %<>% fill_panel(
   row = 3, column = 5:6)
 
 figure_outputs
+
+
+# ============================================================================
+# additional simulations: transition lasting 2 years, 5 years
+
+output_2_5 = create_sim_data_2topic_nonuniform_2yr_5yr()
+beta_2_5 = as.matrix(as.data.frame(output_2_5[1]))
+colnames(beta_2_5) <- list('S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12')
+
+# plot three types of simulated dynamics for the 2 sample communities
+gamma_constant = as.matrix(as.data.frame(output_2_5[2]))
+gamma_2 = as.matrix(as.data.frame(output_2_5[3]))
+gamma_5 = as.matrix(as.data.frame(output_2_5[4]))
+
+
+# plot beta and gammas
+P = plot_community_composition_gg(beta_2_5,c(1,2),ylim=c(0,.5),colors=cbPalette[c(2,4)])
+(figure_spcomp <- multi_panel_figure(
+  width = c(80,80),
+  height = c(50,10),
+  panel_label_type = "none",
+  column_spacing = 0))
+figure_spcomp %<>% fill_panel(
+  P[[1]],
+  row = 1, column = 1)
+figure_spcomp %<>% fill_panel(
+  P[[2]],
+  row = 1, column = 2)
+figure_spcomp
+
+sim_dates = seq.Date(from=as.Date('1977-01-01'),by=30,length.out = 400) 
+
+change_2 = data.frame(date = rep(sim_dates,dim(gamma_2)[2]),
+                  relabund = as.vector(gamma_2),
+                  community = as.factor(c(rep(1,dim(gamma_2)[1]),rep(2,dim(gamma_2)[1]))))
+change_5 = data.frame(date = rep(sim_dates,dim(gamma_5)[2]),
+                  relabund = as.vector(gamma_5),
+                  community = as.factor(c(rep(1,dim(gamma_5)[1]),rep(2,dim(gamma_5)[1]))))
+const = data.frame(date = rep(sim_dates,dim(gamma_constant)[2]),
+                   relabund = as.vector(gamma_constant),
+                   community = as.factor(c(rep(1,dim(gamma_constant)[1]),rep(2,dim(gamma_constant)[1]))))
+
+
+g_1 = plot_gamma(fast,2,ylab='Simulated Dynamics',colors=cbPalette[c(2,4)])
+g_2 = plot_gamma(slow,2,colors=cbPalette[c(2,4)])
+g_3 = plot_gamma(const,2,colors=cbPalette[c(2,4)])
+grid.arrange(g_1,g_2,g_3,nrow=1)
+
+
+# create data sets from beta and gamma; data must be in integer form (simulating species counts)
+dataset1 = round(as.data.frame(gamma_2 %*% beta_2_5) *N,digits=0)
+dataset2 = round(as.data.frame(gamma_5 %*% beta_2_5) *N,digits=0)
+dataset3 = round(as.data.frame(gamma_constant %*% beta_2_5) *N,digits=0)
