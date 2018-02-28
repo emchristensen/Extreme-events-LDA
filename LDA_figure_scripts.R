@@ -183,12 +183,15 @@ plot_community_composition = function(composition,topic_order=1:dim(composition)
 #' @param composition matrix of species composition of topics; as in output of community_composition()
 #' @param topic_order order of topics -- for making this bar graph relate to the component community graph
 #' @param ylim vector of limits for yaxis
+#' @param colors color palette specification
+#' @param title T/F if you want title or not
+#' @param ylabels T/F if you want yaxis label or not
 #' 
 #' @return barplots of the n component communities
 #' 
 #' 
 #' 
-plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbPalette,title=T) {
+plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbPalette,title=T,ylabels = T) {
   topics = dim(composition)[1]
   community = c()
   for (j in 1:topics) {community=append(community,rep(j,length(composition[j,])))}
@@ -201,7 +204,7 @@ plot_community_composition_gg = function(composition,topic_order,ylim,colors=cbP
   p = list()
   j = 1
   for (i in topic_order) {
-    if (j == 1) {ylabel='% Composition'} else {ylabel=''}
+    if (j == 1 && ylabels == T) {ylabel='% Composition'} else {ylabel=''}
     x <- ggplot(data=comp[comp$community==i,], aes(x=species, y=relabund)) +
       geom_bar(stat='identity',fill=colors[i])  +
       geom_bar(data=grass[grass$community==i,],aes(x=species,y=relabund),fill=colors[i],stat='identity',alpha=0,size=1,color='black') +

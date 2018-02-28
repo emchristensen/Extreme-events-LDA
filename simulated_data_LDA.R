@@ -1,6 +1,6 @@
 # Use simulated data to investigate the results of the LDA model with known dynamics:
-#    1. fast transition between 2 topics with steady-state before and after
-#    2. slow transition between 2 topics with little to no steady-state before/after
+#    1. fast transition between 2 topics with steady-state before and after (1-yr change)
+#    2. slow transition between 2 topics with little to no steady-state before/after (25-yr change)
 #    3. fixed proportion of 2 topics through time (no transition)
 
 
@@ -34,9 +34,10 @@ colnames(beta) <- list('S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11',
 
 # plot three types of simulated dynamics for the 2 sample communities
 gamma_constant = as.matrix(as.data.frame(output[2]))
-gamma_fast = as.matrix(as.data.frame(output[3]))
-gamma_slow = as.matrix(as.data.frame(output[4]))
-
+gamma_1yr = as.matrix(as.data.frame(output[3]))
+gamma_2yr = as.matrix(as.data.frame(output[4]))
+gamma_5yr = as.matrix(as.data.frame(output[5]))
+gamma_25yr = as.matrix(as.data.frame(output[6]))
 
 # plot beta and gammas
 P = plot_community_composition_gg(beta,c(1,2),ylim=c(0,.5),colors=cbPalette[c(2,4)])
@@ -55,27 +56,37 @@ figure_spcomp
 
 sim_dates = seq.Date(from=as.Date('1977-01-01'),by=30,length.out = 400) 
 
-fast = data.frame(date = rep(sim_dates,dim(gamma_fast)[2]),
-                  relabund = as.vector(gamma_fast),
-                  community = as.factor(c(rep(1,dim(gamma_fast)[1]),rep(2,dim(gamma_fast)[1]))))
-slow = data.frame(date = rep(sim_dates,dim(gamma_slow)[2]),
-                  relabund = as.vector(gamma_slow),
-                  community = as.factor(c(rep(1,dim(gamma_slow)[1]),rep(2,dim(gamma_slow)[1]))))
+oneyr = data.frame(date = rep(sim_dates,dim(gamma_1yr)[2]),
+                  relabund = as.vector(gamma_1yr),
+                  community = as.factor(c(rep(1,dim(gamma_1yr)[1]),rep(2,dim(gamma_1yr)[1]))))
+twoyr = data.frame(date = rep(sim_dates,dim(gamma_2yr)[2]),
+                  relabund = as.vector(gamma_2yr),
+                  community = as.factor(c(rep(1,dim(gamma_2yr)[1]),rep(2,dim(gamma_2yr)[1]))))
+fiveyr = data.frame(date = rep(sim_dates,dim(gamma_5yr)[2]),
+                   relabund = as.vector(gamma_5yr),
+                   community = as.factor(c(rep(1,dim(gamma_5yr)[1]),rep(2,dim(gamma_5yr)[1]))))
+slow =  data.frame(date = rep(sim_dates,dim(gamma_25yr)[2]),
+                  relabund = as.vector(gamma_25yr),
+                  community = as.factor(c(rep(1,dim(gamma_25yr)[1]),rep(2,dim(gamma_25yr)[1]))))
 const = data.frame(date = rep(sim_dates,dim(gamma_constant)[2]),
                    relabund = as.vector(gamma_constant),
                    community = as.factor(c(rep(1,dim(gamma_constant)[1]),rep(2,dim(gamma_constant)[1]))))
 
 
-g_1 = plot_gamma(fast,2,ylab='Simulated Dynamics',colors=cbPalette[c(2,4)])
-g_2 = plot_gamma(slow,2,colors=cbPalette[c(2,4)])
-g_3 = plot_gamma(const,2,colors=cbPalette[c(2,4)])
-grid.arrange(g_1,g_2,g_3,nrow=1)
+g_1 = plot_gamma(oneyr,2,ylab='Simulated Dynamics',colors=cbPalette[c(2,4)])
+g_2 = plot_gamma(twoyr,2,colors=cbPalette[c(2,4)])
+g_3 = plot_gamma(fiveyr,2,colors=cbPalette[c(2,4)])
+g_4 = plot_gamma(slow,2,colors=cbPalette[c(2,4)])
+g_5 = plot_gamma(const,2,colors=cbPalette[c(2,4)])
+grid.arrange(g_1,g_2,g_3,g_4,g_5,nrow=1)
 
 
 # create data sets from beta and gamma; data must be in integer form (simulating species counts)
-dataset1 = round(as.data.frame(gamma_fast %*% beta) *N,digits=0)
-dataset2 = round(as.data.frame(gamma_slow %*% beta) *N,digits=0)
-dataset3 = round(as.data.frame(gamma_constant %*% beta) *N,digits=0)
+dataset1 = round(as.data.frame(gamma_1yr %*% beta) *N,digits=0)
+dataset2 = round(as.data.frame(gamma_2yr %*% beta) *N,digits=0)
+dataset3 = round(as.data.frame(gamma_5yr %*% beta) *N,digits=0)
+dataset4 = round(as.data.frame(gamma_25yr %*% beta)*N,digits=0)
+dataset5 = round(as.data.frame(gamma_constant %*% beta) *N,digits=0)
 
 # ==================================================================
 # select number of topics
@@ -83,20 +94,24 @@ dataset3 = round(as.data.frame(gamma_constant %*% beta) *N,digits=0)
 
 # Fit a bunch of LDA models with different seeds
 # Only use even numbers for seeds because consecutive seeds give identical results
-seeds = 2*seq(200)
+seeds = 2*seq(20)
 
 # repeat LDA model fit and AIC calculation with a bunch of different seeds to test robustness of the analysis
 best_ntopic_ds1 = repeat_VEM(dataset1,seeds,topic_min=2,topic_max=6)
 best_ntopic_ds2 = repeat_VEM(dataset2,seeds,topic_min=2,topic_max=6)
 best_ntopic_ds3 = repeat_VEM(dataset3,seeds,topic_min=2,topic_max=6)
+best_ntopic_ds4 = repeat_VEM(dataset4,seeds,topic_min=2,topic_max=6)
+best_ntopic_ds5 = repeat_VEM(dataset5,seeds,topic_min=2,topic_max=6)
 
 
  # histogram of how many seeds chose how many topics
 hist(best_ntopic_ds1[,2],breaks=c(0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5),xlab='best # of topics', main='')
 hist(best_ntopic_ds2[,2],breaks=c(0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5),xlab='best # of topics', main='')
 hist(best_ntopic_ds3[,2],breaks=c(0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5),xlab='best # of topics', main='')
+hist(best_ntopic_ds4[,2],breaks=c(0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5),xlab='best # of topics', main='')
+hist(best_ntopic_ds5[,2],breaks=c(0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5),xlab='best # of topics', main='')
 
-# in all three datasets, 2 is the best number of topics
+# in all five datasets, 2 is the best number of topics
 
 # ==================================================================
 # run LDA model
@@ -106,18 +121,22 @@ SEED  = 1
 ldamodel1 = LDA(dataset1,k=2, control = list(seed = SEED),method='VEM')
 ldamodel2 = LDA(dataset2,k=2, control = list(seed = SEED),method='VEM')
 ldamodel3 = LDA(dataset3,k=2, control = list(seed = SEED),method='VEM')
+ldamodel4 = LDA(dataset4,k=2, control = list(seed = SEED),method='VEM')
+ldamodel5 = LDA(dataset5,k=2, control = list(seed = SEED),method='VEM')
 
 # plot results - gammas
 g1 = plot_component_communities(ldamodel1,2,sim_dates,ylab='LDA model output',colors=cbPalette[c(1,3)])
 g2 = plot_component_communities(ldamodel2,2,sim_dates,colors=cbPalette[c(1,3)])
 g3 = plot_component_communities(ldamodel3,2,sim_dates,colors=cbPalette[c(1,3)])
-grid.arrange(g1,g2,g3,nrow=1)
+g4 = plot_component_communities(ldamodel4,2,sim_dates,colors=cbPalette[c(1,3)])
+g5 = plot_component_communities(ldamodel5,2,sim_dates,colors=cbPalette[c(1,3)])
+grid.arrange(g1,g2,g3,g4,g5,nrow=1)
 
 # plot community compositions (betas)
 beta1 = community_composition(ldamodel1)
 spcomp_1 = plot_community_composition_gg(beta1,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
 (figure_spcomp_s1 <- multi_panel_figure(
-  width = c(40,40),
+  width = c(30,30),
   height = c(40,10),
   panel_label_type = "none",
   column_spacing = 0))
@@ -132,9 +151,9 @@ plot_community_composition(beta1)
 
 
 beta2 = community_composition(ldamodel2)
-spcomp_2 = plot_community_composition_gg(beta2,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
+spcomp_2 = plot_community_composition_gg(beta2,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F,ylabels=F)
 (figure_spcomp_s2 <- multi_panel_figure(
-  width = c(40,40),
+  width = c(30,30),
   height = c(40,10),
   panel_label_type = "none",
   column_spacing = 0))
@@ -144,12 +163,12 @@ figure_spcomp_s2 %<>% fill_panel(
 figure_spcomp_s2 %<>% fill_panel(
   spcomp_2[[2]],
   row = 1, column = 2)
-#figure_spcomp_s2
+figure_spcomp_s2
 
 beta3 = community_composition(ldamodel3)
-spcomp_3 = plot_community_composition_gg(beta3,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F)
+spcomp_3 = plot_community_composition_gg(beta3,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F,ylabels=F)
 (figure_spcomp_s3 <- multi_panel_figure(
-  width = c(40,40),
+  width = c(30,30),
   height = c(40,10),
   panel_label_type = "none",
   column_spacing = 0))
@@ -160,6 +179,36 @@ figure_spcomp_s3 %<>% fill_panel(
   spcomp_3[[2]],
   row = 1, column = 2)
 #figure_spcomp_s3
+
+beta4 = community_composition(ldamodel4)
+spcomp_4 = plot_community_composition_gg(beta4,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F,ylabels=F)
+(figure_spcomp_s4 <- multi_panel_figure(
+  width = c(30,30),
+  height = c(40,10),
+  panel_label_type = "none",
+  column_spacing = 0))
+figure_spcomp_s4 %<>% fill_panel(
+  spcomp_4[[1]],
+  row = 1, column = 1)
+figure_spcomp_s4 %<>% fill_panel(
+  spcomp_4[[2]],
+  row = 1, column = 2)
+#figure_spcomp_s4
+
+beta5 = community_composition(ldamodel5)
+spcomp_5 = plot_community_composition_gg(beta5,c(2,1),ylim=c(0,.5),colors=cbPalette[c(1,3)],title=F,ylabels=F)
+(figure_spcomp_s5 <- multi_panel_figure(
+  width = c(30,30),
+  height = c(40,10),
+  panel_label_type = "none",
+  column_spacing = 0))
+figure_spcomp_s5 %<>% fill_panel(
+  spcomp_5[[1]],
+  row = 1, column = 1)
+figure_spcomp_s5 %<>% fill_panel(
+  spcomp_5[[2]],
+  row = 1, column = 2)
+#figure_spcomp_s5
  
 # ==================================================================
 # changepoint model 
@@ -173,12 +222,16 @@ x_sim = data.frame(
 cp_results1 = changepoint_model(ldamodel1, x_sim, 1, weights = rep(1,length(year_continuous_sim)))
 cp_results2 = changepoint_model(ldamodel2, x_sim, 1, weights = rep(1,length(year_continuous_sim)))
 cp_results3 = changepoint_model(ldamodel3, x_sim, 1, weights = rep(1,length(year_continuous_sim)))
+cp_results4 = changepoint_model(ldamodel4, x_sim, 1, weights = rep(1,length(year_continuous_sim)))
+cp_results5 = changepoint_model(ldamodel5, x_sim, 1, weights = rep(1,length(year_continuous_sim)))
 
 # changepoint visualizations
-par(mfrow=c(1,3))
+par(mfrow=c(1,5))
 annual_hist(cp_results1,year_continuous_sim)
 annual_hist(cp_results2,year_continuous_sim)
 annual_hist(cp_results3,year_continuous_sim)
+annual_hist(cp_results4,year_continuous_sim)
+annual_hist(cp_results5,year_continuous_sim)
 par(mfrow=c(1,1))
 
 dfsim1 = data.frame(value = year_continuous_sim[cp_results1$saved[,1,]])
@@ -205,6 +258,22 @@ H_sim3 = ggplot(data = dfsim3, aes(x=value)) +
   xlim(range(year_continuous_sim)) +
   theme(axis.text=element_text(size=9),
         panel.border=element_rect(colour='black',fill=NA))
+dfsim4 = data.frame(value = year_continuous_sim[cp_results4$saved[,1,]])
+H_sim4 = ggplot(data = dfsim4, aes(x=value)) +
+  geom_histogram(data=dfsim4,aes(y=..count../sum(..count..)),binwidth = .5,fill='black') +
+  labs(x='',y='') +
+  ylim(c(0,1)) +
+  xlim(range(year_continuous_sim)) +
+  theme(axis.text=element_text(size=9),
+        panel.border=element_rect(colour='black',fill=NA))
+dfsim5 = data.frame(value = year_continuous_sim[cp_results5$saved[,1,]])
+H_sim5 = ggplot(data = dfsim5, aes(x=value)) +
+  geom_histogram(data=dfsim5,aes(y=..count../sum(..count..)),binwidth = .5,fill='black') +
+  labs(x='',y='') +
+  ylim(c(0,1)) +
+  xlim(range(year_continuous_sim)) +
+  theme(axis.text=element_text(size=9),
+        panel.border=element_rect(colour='black',fill=NA))
 
 # ===============================================================
 # Create Figure
@@ -212,21 +281,27 @@ H_sim3 = ggplot(data = dfsim3, aes(x=value)) +
 
 # all in one big multipart figure
 (figure <- multi_panel_figure(
-  width = c(40,40,40,40,40,40),
+  width = c(30,30,30,30,30,30,30,30,30,30),
   height = c(35,40,40,40,40),
   panel_label_type = "lower-alpha"))
 figure %<>% fill_panel(
   figure_spcomp,
-  row = 1, column = 2:5)
-figure %<>% fill_panel(
-  g_2,
-  row = 2, column = 1:2)
+  row = 1, column = 3:8)
 figure %<>% fill_panel(
   g_1,
+  row = 2, column = 1:2)
+figure %<>% fill_panel(
+  g_2,
   row = 2, column = 3:4)
 figure %<>% fill_panel(
   g_3,
   row = 2, column = 5:6)
+figure %<>% fill_panel(
+  g_4,
+  row = 2, column = 7:8)
+figure %<>% fill_panel(
+  g_5,
+  row = 2, column = 9:10)
 figure %<>% fill_panel(
   figure_spcomp_s1,
   row = 3, column = 1:2)
@@ -237,6 +312,12 @@ figure %<>% fill_panel(
   figure_spcomp_s3,
   row = 3, column = 5:6)
 figure %<>% fill_panel(
+  figure_spcomp_s4,
+  row = 3, column = 7:8)
+figure %<>% fill_panel(
+  figure_spcomp_s5,
+  row = 3, column = 9:10)
+figure %<>% fill_panel(
   g1,
   row = 4, column = 1:2)
 figure %<>% fill_panel(
@@ -246,6 +327,12 @@ figure %<>% fill_panel(
   g3,
   row = 4, column = 5:6)
 figure %<>% fill_panel(
+  g4,
+  row = 4, column = 7:8)
+figure %<>% fill_panel(
+  g5,
+  row = 4, column = 9:10)
+figure %<>% fill_panel(
   H_sim1,
   row = 5, column = 1:2)
 figure %<>% fill_panel(
@@ -254,6 +341,12 @@ figure %<>% fill_panel(
 figure %<>% fill_panel(
   H_sim3,
   row = 5, column = 5:6)
+figure %<>% fill_panel(
+  H_sim4,
+  row = 5, column = 7:8)
+figure %<>% fill_panel(
+  H_sim5,
+  row = 5, column = 9:10)
 
 figure
 
