@@ -386,54 +386,54 @@ H_5
 
 # ======================
 # stacked histograms
-H_2 = ggplot(data = df_2, aes(x=value)) +
-  geom_histogram(data=df_2,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
-  labs(x='',y='') +
-  scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
-  theme(axis.text=element_text(size=12),
-        panel.border=element_rect(colour='black',fill=NA),
-        panel.background = element_blank(),
-        panel.grid.major = element_line(colour='grey90'),
-        panel.grid.minor = element_line(colour='grey90'),
-        legend.position = 'none') +
-  xlim(range(year_continuous))
-H_2
-H_3 = ggplot(data = df_3, aes(x=value)) +
-  geom_histogram(data=df_3,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
-  labs(x='',y='') +
-  scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
-  theme(axis.text=element_text(size=12),
-        panel.border=element_rect(colour='black',fill=NA),
-        panel.background = element_blank(),
-        panel.grid.major = element_line(colour='grey90'),
-        panel.grid.minor = element_line(colour='grey90'),
-        legend.position = 'none') +
-  xlim(range(year_continuous)) 
-H_3
-H_4b = ggplot(data = df_4, aes(x=value)) +
-  geom_histogram(data=df_4,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
-  labs(x='',y='') +
-  scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
-  theme(axis.text=element_text(size=12),
-        panel.border=element_rect(colour='black',fill=NA),
-        panel.background = element_blank(),
-        panel.grid.major = element_line(colour='grey90'),
-        panel.grid.minor = element_line(colour='grey90'),
-        legend.position = 'none') +
-  xlim(range(year_continuous))
-H_4b
-H_5 = ggplot(data = df_5, aes(x=value)) +
-  geom_histogram(data=df_5,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
-  labs(x='',y='') +
-  scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80','1.00','1.20'),breaks = c(0,.2,.4,.6,.8,1,1.2)) +
-  theme(axis.text=element_text(size=12),
-        panel.border=element_rect(colour='black',fill=NA),
-        panel.background = element_blank(),
-        panel.grid.major = element_line(colour='grey90'),
-        panel.grid.minor = element_line(colour='grey90'),
-        legend.position = 'none') +
-  xlim(range(year_continuous))
-H_5
+# H_2 = ggplot(data = df_2, aes(x=value)) +
+#   geom_histogram(data=df_2,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
+#   labs(x='',y='') +
+#   scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
+#   theme(axis.text=element_text(size=12),
+#         panel.border=element_rect(colour='black',fill=NA),
+#         panel.background = element_blank(),
+#         panel.grid.major = element_line(colour='grey90'),
+#         panel.grid.minor = element_line(colour='grey90'),
+#         legend.position = 'none') +
+#   xlim(range(year_continuous))
+# H_2
+# H_3 = ggplot(data = df_3, aes(x=value)) +
+#   geom_histogram(data=df_3,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
+#   labs(x='',y='') +
+#   scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
+#   theme(axis.text=element_text(size=12),
+#         panel.border=element_rect(colour='black',fill=NA),
+#         panel.background = element_blank(),
+#         panel.grid.major = element_line(colour='grey90'),
+#         panel.grid.minor = element_line(colour='grey90'),
+#         legend.position = 'none') +
+#   xlim(range(year_continuous)) 
+# H_3
+# H_4b = ggplot(data = df_4, aes(x=value)) +
+#   geom_histogram(data=df_4,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
+#   labs(x='',y='') +
+#   scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80'),breaks = c(0,.2,.4,.6,.8)) +
+#   theme(axis.text=element_text(size=12),
+#         panel.border=element_rect(colour='black',fill=NA),
+#         panel.background = element_blank(),
+#         panel.grid.major = element_line(colour='grey90'),
+#         panel.grid.minor = element_line(colour='grey90'),
+#         legend.position = 'none') +
+#   xlim(range(year_continuous))
+# H_4b
+# H_5 = ggplot(data = df_5, aes(x=value)) +
+#   geom_histogram(data=df_5,aes(y=..count../sum(..count..),fill=variable),binwidth = .5,color='black') +
+#   labs(x='',y='') +
+#   scale_y_continuous(labels=c('0.00','0.20','0.40','0.60','0.80','1.00','1.20'),breaks = c(0,.2,.4,.6,.8,1,1.2)) +
+#   theme(axis.text=element_text(size=12),
+#         panel.border=element_rect(colour='black',fill=NA),
+#         panel.background = element_blank(),
+#         panel.grid.major = element_line(colour='grey90'),
+#         panel.grid.minor = element_line(colour='grey90'),
+#         legend.position = 'none') +
+#   xlim(range(year_continuous))
+# H_5
 
 
 
@@ -455,7 +455,7 @@ figure_s6 %<>% fill_panel(
   H_5,
   row = 4, column = 1:4)
 figure_s6
-ggsave("explanatory.pdf", width = 7, height = 6)
+
 
 # ============================================================
 # figures not in manuscript

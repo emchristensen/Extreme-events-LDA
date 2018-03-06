@@ -7,12 +7,9 @@ library(ggplot2)
 ndvi = read.csv('Monthly_Landsat_NDVI.csv',
                    na.strings=c(""), stringsAsFactors = FALSE)
 
-ndvi$Date = as.Date(ndvi$Date,format='%Y-%M')
 ndvi$NDVI = as.numeric(ndvi$NDVI)
-ndvi$year = format(ndvi$date,'%Y') %>% as.numeric()
+ndvi$year = as.integer(substr(ndvi$Date,1,4))
 
-plot(ndvi$date,ndvi$NDVI)
-lines(ndvi$date,ndvi$NDVI)
 
 
 # ===============
