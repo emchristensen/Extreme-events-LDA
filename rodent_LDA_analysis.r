@@ -139,8 +139,8 @@ plot_community_composition(composition,c(3,4,1,2))
 P = plot_community_composition_gg(composition,c(3,4,1,2),ylim=c(0,.8))
 
 (figure_spcomp <- multi_panel_figure(
-  width = c(70,70,70,70),
-  height = c(70,10),
+  width = c(38,38,38,38),
+  height = c(40,5),
   panel_label_type = "none",
   column_spacing = 0))
 figure_spcomp %<>% fill_panel(
@@ -187,24 +187,26 @@ cpt_plot = get_ll_non_memoized_plot(ldamodel,x,cpts,make_plot=T,weights=rep(1,le
 
 # Figure 1 -- community composition, LDA model, changepoint histogram, changepoint timeseries
 (figure <- multi_panel_figure(
-  width = c(70,70,70,70),
-  height = c(60,60,60,60),
+  width = c(3,38,38,38,38),
+  height = c(5,40,42,42,42),
   column_spacing = 0,
+  row_spacing = 0,
   panel_label_type = "lower-alpha"))
 figure %<>% fill_panel(
   figure_spcomp,
-  row = 1, column = 1:4)
+  row = 2, column = 2:5)
 figure %<>% fill_panel(
   cc,
-  row = 2, column = 1:4)
+  row = 3, column = 2:5)
 figure %<>% fill_panel(
   H_4,
-  row = 3, column = 1:4)
+  row = 4, column = 2:5)
 figure %<>% fill_panel(
   cpt_plot,
-  row = 4, column = 1:4)
+  row = 5, column = 2:5)
 figure
 
+save_multi_panel_figure(figure,'Figure1.tiff',dpi=600)
 
 # ===================================================================
 # 6. appendix: LDA with 3 and 5 topics
