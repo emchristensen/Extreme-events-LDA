@@ -66,4 +66,4 @@ ggplot(abund_dat,aes(x=censusdate,y=density)) +
   geom_point(size=2, inherit.aes=F,aes(x=as.Date('1999-08-15'),y=-10),pch=15) +
   theme(legend.position = 'none') 
 
-ggsave(filename='Figure2.tiff',width=6,height=2.8,units='in',dpi=600)
+ggsave(filename='Figure2.tiff',width=6,height=2.8,units='in',dpi=600,compression='lzw')

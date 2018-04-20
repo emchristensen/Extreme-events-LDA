@@ -206,7 +206,7 @@ figure %<>% fill_panel(
   row = 5, column = 2:5)
 figure
 
-save_multi_panel_figure(figure,'Figure1.tiff',dpi=600)
+save_multi_panel_figure(figure,'Figure1.tiff',dpi=600,compression='lzw')
 
 # ===================================================================
 # 6. appendix: LDA with 3 and 5 topics
