@@ -97,10 +97,10 @@ composition_x = sqrt(N) * seq(0.5, N_docs - .5) + seq_len(N_docs)
 
 left_labels = tribble(
   ~label,                  ~y,
-  "A) Community-type\ndefinitions",    max(arrows$y) + 2,
-  "B) Community-type\nproportions",    min(arrows$yend) + 0.5,
-  "C) Assemblages",           sqrt(N)/2 + 1,
-  "D) Species\ncomposition",   -1.5
+  "A  Community-\ntype definitions",    max(arrows$y) + 2,
+  "B  Community-\ntype proportions",    min(arrows$yend) + 0.5,
+  "C  Assemblages",           sqrt(N)/2 + 1,
+  "D  Species\ncomposition",   -1.5
 )
 point_size = 3.4
 
@@ -157,4 +157,4 @@ final_plot = styled_plot +
 
 
 final_plot
-ggsave("explanatory.pdf", width = 7, height = 6)
+ggsave("explanatory.tiff", width = 8.5, height = 6)

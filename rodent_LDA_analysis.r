@@ -225,8 +225,8 @@ composition3 = beta13topic[,c('NA','DS','SH','SF','SO','DO','DM','CB','CH','OL',
 P3topic = plot_community_composition_gg(composition3,c(3,2,1),c(0,.8))
 
 (figure_spcomp3 <- multi_panel_figure(
-  width = c(70,70,70),
-  height = c(70,10),
+  width = c(60,60,60),
+  height = c(60,10),
   panel_label_type = "none",
   column_spacing = 0))
 figure_spcomp3 %<>% fill_panel(
@@ -241,31 +241,52 @@ figure_spcomp3 %<>% fill_panel(
 figure_spcomp3
 
 (figure_s2 <- multi_panel_figure(
-  width = c(70,70,70,70),
+  width = c(5,70,70,70,70),
   height = c(60,60),
   column_spacing = 0,
-  panel_label_type = "lower-alpha"))
+  panel_label_type = "upper-alpha"))
 figure_s2 %<>% fill_panel(
   figure_spcomp3,
-  row = 1, column = 1:4)
+  row = 1, column = 2:5)
 figure_s2 %<>% fill_panel(
   cc3,
-  row = 2, column = 1:4)
+  row = 2, column = 2:5)
 figure_s2
+save_multi_panel_figure(figure_s2,'FigureB-3.tiff',dpi=600,compression='lzw')
 
 # 4 topics
+(figure_spcomp4 <- multi_panel_figure(
+  width = c(65,65,65,65),
+  height = c(60,10),
+  panel_label_type = "none",
+  column_spacing = 0))
+figure_spcomp4 %<>% fill_panel(
+  P[[1]],
+  row = 1, column = 1)
+figure_spcomp4 %<>% fill_panel(
+  P[[2]],
+  row = 1, column = 2)
+figure_spcomp4 %<>% fill_panel(
+  P[[3]],
+  row = 1, column = 3)
+figure_spcomp4 %<>% fill_panel(
+  P[[4]],
+  row = 1, column = 4)
+figure_spcomp4
+
 (figure_s3 <- multi_panel_figure(
-  width = c(70,70,70,70),
+  width = c(5,65,65,65,65),
   height = c(60,60),
   column_spacing = 0,
-  panel_label_type = "lower-alpha"))
+  panel_label_type = "upper-alpha"))
 figure_s3 %<>% fill_panel(
-  figure_spcomp,
-  row = 1, column = 1:4)
+  figure_spcomp4,
+  row = 1, column = 2:5)
 figure_s3 %<>% fill_panel(
   cc,
-  row = 2, column = 1:4)
+  row = 2, column = 2:5)
 figure_s3
+save_multi_panel_figure(figure_s3,'FigureB-4.tiff',dpi=600,compression='lzw')
 
 # 5 topics
 ldamodel5topic = LDA(dat,5, control = list(seed = 110),method='VEM')
@@ -301,10 +322,11 @@ figure_spcomp5 %<>% fill_panel(
   row = 1, column = 5)
 figure_spcomp5
 
+
 (figure_s4 <- multi_panel_figure(
-  width = c(70,70,70,70),
+  width = c(70,70,70,70,5),
   height = c(60,60),
-  panel_label_type = "lower-alpha"))
+  panel_label_type = "upper-alpha"))
 figure_s4 %<>% fill_panel(
   figure_spcomp5,
   row = 1, column = 1:4)
@@ -312,6 +334,7 @@ figure_s4 %<>% fill_panel(
   cc5,
   row = 2, column = 1:4)
 figure_s4
+save_multi_panel_figure(figure_s4,'FigureB-5.tiff',dpi=600,compression='lzw')
 
 # =======================================================
 # two, three, and five changepoints
@@ -440,24 +463,24 @@ H_5
 
 
 (figure_s6 <- multi_panel_figure(
-  width = c(60,60,60,60),
+  width = c(5,60,60,60,60),
   height = c(60,60,60,60),
   column_spacing = 0,
-  panel_label_type = "lower-alpha"))
+  panel_label_type = "upper-alpha"))
 figure_s6 %<>% fill_panel(
   H_2,
-  row = 1, column = 1:4)
+  row = 1, column = 2:5)
 figure_s6 %<>% fill_panel(
   H_3,
-  row = 2, column = 1:4)
+  row = 2, column = 2:5)
 figure_s6 %<>% fill_panel(
   H_4b,
-  row = 3, column = 1:4)
+  row = 3, column = 2:5)
 figure_s6 %<>% fill_panel(
   H_5,
-  row = 4, column = 1:4)
+  row = 4, column = 2:5)
 figure_s6
-
+save_multi_panel_figure(figure_s6,'FigureB-2.tiff',dpi=600,compression='lzw')
 
 # ============================================================
 # figures not in manuscript

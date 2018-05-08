@@ -43,7 +43,7 @@ gamma_25yr = as.matrix(as.data.frame(output[6]))
 P = plot_community_composition_gg(beta,c(1,2),ylim=c(0,.5),colors=cbPalette[c(2,4)])
 (figure_spcomp <- multi_panel_figure(
   width = c(80,80),
-  height = c(50,10),
+  height = c(45,10),
   panel_label_type = "none",
   column_spacing = 0))
 figure_spcomp %<>% fill_panel(
@@ -240,7 +240,7 @@ H_sim1 = ggplot(data = dfsim1, aes(x=value)) +
   labs(x='',y='Changepoint Model') +
   ylim(c(0,1)) +
   xlim(range(year_continuous_sim)) +
-  theme(axis.text=element_text(size=9),
+  theme(axis.text=element_text(size=12),
         panel.border=element_rect(colour='black',fill=NA))
 dfsim2 = data.frame(value = year_continuous_sim[cp_results2$saved[,1,]])
 H_sim2 = ggplot(data = dfsim2, aes(x=value)) +
@@ -248,7 +248,7 @@ H_sim2 = ggplot(data = dfsim2, aes(x=value)) +
   labs(x='',y='') +
   ylim(c(0,1)) +
   xlim(range(year_continuous_sim)) +
-  theme(axis.text=element_text(size=9),
+  theme(axis.text=element_text(size=12),
         panel.border=element_rect(colour='black',fill=NA))
 dfsim3 = data.frame(value = year_continuous_sim[cp_results3$saved[,1,]])
 H_sim3 = ggplot(data = dfsim3, aes(x=value)) +
@@ -256,7 +256,7 @@ H_sim3 = ggplot(data = dfsim3, aes(x=value)) +
   labs(x='',y='') +
   ylim(c(0,1)) +
   xlim(range(year_continuous_sim)) +
-  theme(axis.text=element_text(size=9),
+  theme(axis.text=element_text(size=12),
         panel.border=element_rect(colour='black',fill=NA))
 dfsim4 = data.frame(value = year_continuous_sim[cp_results4$saved[,1,]])
 H_sim4 = ggplot(data = dfsim4, aes(x=value)) +
@@ -264,7 +264,7 @@ H_sim4 = ggplot(data = dfsim4, aes(x=value)) +
   labs(x='',y='') +
   ylim(c(0,1)) +
   xlim(range(year_continuous_sim)) +
-  theme(axis.text=element_text(size=9),
+  theme(axis.text=element_text(size=12),
         panel.border=element_rect(colour='black',fill=NA))
 dfsim5 = data.frame(value = year_continuous_sim[cp_results5$saved[,1,]])
 H_sim5 = ggplot(data = dfsim5, aes(x=value)) +
@@ -272,7 +272,7 @@ H_sim5 = ggplot(data = dfsim5, aes(x=value)) +
   labs(x='',y='') +
   ylim(c(0,1)) +
   xlim(range(year_continuous_sim)) +
-  theme(axis.text=element_text(size=9),
+  theme(axis.text=element_text(size=12),
         panel.border=element_rect(colour='black',fill=NA))
 
 # ===============================================================
@@ -281,74 +281,76 @@ H_sim5 = ggplot(data = dfsim5, aes(x=value)) +
 
 # all in one big multipart figure
 (figure <- multi_panel_figure(
-  width = c(30,30,30,30,30,30,30,30,30,30),
-  height = c(35,40,40,40,40),
-  panel_label_type = "lower-alpha"))
+  width = c(30,30,30,30,30,30,30,30,30,30,6),
+  height = c(6,50,40,40,40,40),
+  row_spacing = 0,
+  panel_label_type = "upper-alpha"))
 figure %<>% fill_panel(
   figure_spcomp,
-  row = 1, column = 3:8)
+  row = 2, column = 3:8)
 figure %<>% fill_panel(
   g_1,
-  row = 2, column = 1:2)
-figure %<>% fill_panel(
-  g_2,
-  row = 2, column = 3:4)
-figure %<>% fill_panel(
-  g_3,
-  row = 2, column = 5:6)
-figure %<>% fill_panel(
-  g_4,
-  row = 2, column = 7:8)
-figure %<>% fill_panel(
-  g_5,
-  row = 2, column = 9:10)
-figure %<>% fill_panel(
-  figure_spcomp_s1,
   row = 3, column = 1:2)
 figure %<>% fill_panel(
-  figure_spcomp_s2,
+  g_2,
   row = 3, column = 3:4)
 figure %<>% fill_panel(
-  figure_spcomp_s3,
+  g_3,
   row = 3, column = 5:6)
 figure %<>% fill_panel(
-  figure_spcomp_s4,
+  g_4,
   row = 3, column = 7:8)
 figure %<>% fill_panel(
-  figure_spcomp_s5,
+  g_5,
   row = 3, column = 9:10)
 figure %<>% fill_panel(
-  g1,
+  figure_spcomp_s1,
   row = 4, column = 1:2)
 figure %<>% fill_panel(
-  g2,
+  figure_spcomp_s2,
   row = 4, column = 3:4)
 figure %<>% fill_panel(
-  g3,
+  figure_spcomp_s3,
   row = 4, column = 5:6)
 figure %<>% fill_panel(
-  g4,
+  figure_spcomp_s4,
   row = 4, column = 7:8)
 figure %<>% fill_panel(
-  g5,
+  figure_spcomp_s5,
   row = 4, column = 9:10)
 figure %<>% fill_panel(
-  H_sim1,
+  g1,
   row = 5, column = 1:2)
 figure %<>% fill_panel(
-  H_sim2,
+  g2,
   row = 5, column = 3:4)
 figure %<>% fill_panel(
-  H_sim3,
+  g3,
   row = 5, column = 5:6)
 figure %<>% fill_panel(
-  H_sim4,
+  g4,
   row = 5, column = 7:8)
 figure %<>% fill_panel(
-  H_sim5,
+  g5,
   row = 5, column = 9:10)
+figure %<>% fill_panel(
+  H_sim1,
+  row = 6, column = 1:2)
+figure %<>% fill_panel(
+  H_sim2,
+  row = 6, column = 3:4)
+figure %<>% fill_panel(
+  H_sim3,
+  row = 6, column = 5:6)
+figure %<>% fill_panel(
+  H_sim4,
+  row = 6, column = 7:8)
+figure %<>% fill_panel(
+  H_sim5,
+  row = 6, column = 9:10)
 
 figure
+save_multi_panel_figure(figure,'FigureS1-2.tiff',dpi=600,compression='lzw')
 
 # separate figures for model inputs and model outputs
 (figure_inputs <- multi_panel_figure(
