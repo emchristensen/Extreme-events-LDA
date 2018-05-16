@@ -85,11 +85,11 @@ gg_plot_gamma = function(ldamodel,sim_dates,x_labels=F) {
   for (t in 1:2) {
     ldaplot = rbind(ldaplot,data.frame(date=xticks,relabund=z$topics[,t],community = as.factor(rep(t,length(z$topics[,1])))))
   }
-  if (x_labels==F) {x_text = element_blank()} else {x_text=element_text(size=10)}
+  if (x_labels==F) {x_text = element_blank();xname=''} else {x_text=element_text(size=8);xname='Time'}
   g = ggplot(ldaplot, aes(x=date,y=relabund,colour=community)) + 
     geom_line(size=1.5) +
     scale_y_continuous(limits=c(0,1),name='') +
-    scale_x_date(name='') +
+    scale_x_date(name=xname) +
     theme(axis.text.x=x_text,
           panel.border=element_rect(colour='black',fill=NA),
           legend.position='none') +
@@ -153,27 +153,31 @@ data3 <- tidyr::gather(dataset3, species, n, S1:S12, factor_key=TRUE)
 pop1 = ggplot(data1,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
   #ylab('Gradual \nChange') +
+  ylab('') +
+  scale_x_date(name='') +
+  scale_y_continuous(limits=c(0,100)) +
   theme(legend.position="none",
-        axis.title.x=element_blank(),
         axis.text.x=element_blank(),
-        axis.title.y = element_text(angle = 0,vjust=.5,size=12),
         panel.border=element_rect(color='black',fill=NA)) 
 pop2 = ggplot(data2,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
   #ylab('Rapid \nShifts') +
+  scale_x_date(name='') +
+  scale_y_continuous(name='',limits=c(0,100)) +
   theme(legend.position="none",
-        axis.title.x=element_blank(),
         axis.text.x=element_blank(),
-        axis.title.y = element_text(angle = 0,vjust=.5,size=12),
         panel.border=element_rect(color='black',fill=NA))
 pop3 = ggplot(data3,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
   #ylab('Stability') +
+  ylab('') +
+  scale_x_date(name='Time') +
+  scale_y_continuous(limits=c(0,100)) +
   theme(legend.position="none",
-        axis.title.y = element_text(angle = 0,vjust=.5,size=12),
-        panel.border=element_rect(color='black',fill=NA)) +
-  xlab('Time')
-grid.arrange(pop1,pop2,pop3,nrow=1)
+        #axis.text.x=element_blank(),
+        axis.text.x=element_text(size=8),
+        panel.border=element_rect(color='black',fill=NA)) 
+gridExtra::grid.arrange(pop1,pop2,pop3,nrow=1)
 
 
 #############################################################################################
@@ -189,7 +193,7 @@ ldamodel3 = LDA(dataset3[,-13],k=2, control = list(seed = SEED,estimate.alpha=F,
 g1 = gg_plot_gamma(ldamodel1,sim_dates)
 g2 = gg_plot_gamma(ldamodel2,sim_dates)
 g3 = gg_plot_gamma(ldamodel3,sim_dates,T)
-grid.arrange(g1,g2,g3,nrow=1)
+gridExtra::grid.arrange(g1,g2,g3,nrow=1)
 
 
 # species composition bar plots
@@ -230,12 +234,14 @@ spcomp3$species <- factor(spcomp3$species,levels = colnames(beta3))
 gg_spcomp3 = ggplot(spcomp3) +
   geom_bar(stat='identity',aes(x=species,y=percent,fill=topic),
            position = position_dodge(width = .33)) +
-  scale_x_discrete(name='') +
+  scale_x_discrete(name='Species') +
   scale_y_continuous(name='') +
   scale_fill_manual(values=cbPalette[c(1,3)]) +
   theme(legend.position = 'none',
         panel.border=element_rect(color='black',fill=NA),
-        axis.text.x = element_text(angle = 90,hjust=0,vjust=.5,size=10))
+        axis.text.x = element_text(size=8))
+      #  axis.text.x = element_blank())
+        #axis.text.x = element_text(angle = 0,hjust=.5,vjust=.5,size=10))
 
 #############################################################################################
 # Big figure
