@@ -85,12 +85,12 @@ gg_plot_gamma = function(ldamodel,sim_dates,x_labels=F) {
   for (t in 1:2) {
     ldaplot = rbind(ldaplot,data.frame(date=xticks,relabund=z$topics[,t],community = as.factor(rep(t,length(z$topics[,1])))))
   }
-  if (x_labels==F) {x_text = element_blank();xname=''} else {x_text=element_text(size=8);xname='Time'}
+  if (x_labels==F) {x_text = c('','','','');xname=''} else {x_text=c('1980','1990','2000','2010');xname='Time'}
   g = ggplot(ldaplot, aes(x=date,y=relabund,colour=community)) + 
     geom_line(size=1.5) +
     scale_y_continuous(limits=c(0,1),name='') +
-    scale_x_date(name=xname) +
-    theme(axis.text.x=x_text,
+    scale_x_date(name=xname,breaks=c(as.Date('1980-01-01'),as.Date('1990-01-01'),as.Date('2000-01-01'),as.Date('2010-01-01')),labels=x_text) +
+    theme(axis.text.x=element_text(size=8),
           panel.border=element_rect(colour='black',fill=NA),
           legend.position='none') +
     scale_colour_manual(breaks=as.character(seq(2)),
@@ -103,6 +103,7 @@ gg_plot_gamma = function(ldamodel,sim_dates,x_labels=F) {
 ##################################################################################
 
 cbPalette <- c( "#e19c02","#999999", "#56B4E9", "#0072B2", "#D55E00", "#F0E442", "#009E73", "#CC79A7")
+
 
 N = 200   # total number of individuals
 set.seed(1)
@@ -150,31 +151,29 @@ data1 <- tidyr::gather(dataset1, species, n, S1:S12, factor_key=TRUE)
 data2 <- tidyr::gather(dataset2, species, n, S1:S12, factor_key=TRUE)
 data3 <- tidyr::gather(dataset3, species, n, S1:S12, factor_key=TRUE)
 
+datebreaks=c(as.Date('1980-01-01'),as.Date('1990-01-01'),as.Date('2000-01-01'),as.Date('2010-01-01'))
+
 pop1 = ggplot(data1,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
-  #ylab('Gradual \nChange') +
   ylab('') +
-  scale_x_date(name='') +
-  scale_y_continuous(limits=c(0,100)) +
+  scale_x_date(name='',breaks=datebreaks,labels=c('','','','')) +
+  scale_y_continuous(limits=c(0,140)) +
   theme(legend.position="none",
-        axis.text.x=element_blank(),
+        axis.text.x=element_text(size=8),
         panel.border=element_rect(color='black',fill=NA)) 
 pop2 = ggplot(data2,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
-  #ylab('Rapid \nShifts') +
-  scale_x_date(name='') +
-  scale_y_continuous(name='',limits=c(0,100)) +
+  scale_x_date(name='',breaks=datebreaks,labels=c('','','','')) +
+  scale_y_continuous(name='',limits=c(0,140)) +
   theme(legend.position="none",
-        axis.text.x=element_blank(),
+        axis.text.x=element_text(size=8),
         panel.border=element_rect(color='black',fill=NA))
 pop3 = ggplot(data3,aes(x=time,y=n,colour=species)) +
   geom_line(size=1.5) +
-  #ylab('Stability') +
   ylab('') +
-  scale_x_date(name='Time') +
-  scale_y_continuous(limits=c(0,100)) +
+  scale_x_date(name='Time',breaks=datebreaks,labels=c('1980','1990','2000','2010')) +
+  scale_y_continuous(limits=c(0,140)) +
   theme(legend.position="none",
-        #axis.text.x=element_blank(),
         axis.text.x=element_text(size=8),
         panel.border=element_rect(color='black',fill=NA)) 
 gridExtra::grid.arrange(pop1,pop2,pop3,nrow=1)
@@ -204,12 +203,12 @@ spcomp1$species <- factor(spcomp1$species,levels = colnames(beta1))
 gg_spcomp1 = ggplot(spcomp1) +
   geom_bar(stat='identity',aes(x=species,y=percent,fill=topic),
            position = position_dodge(width = .33)) +
-  scale_x_discrete(name='') +
+  scale_x_discrete(name='',breaks=levels(spcomp1$species),labels=rep('',12)) +
   scale_y_continuous(name='') +
   scale_fill_manual(values=cbPalette[c(1,3)]) +
   theme(legend.position = 'none',
         panel.border=element_rect(color='black',fill=NA),
-        axis.text.x=element_blank())
+        axis.text.x=element_text(size=8))
 
 
 spcomp2 = data.frame(topic=c(rep('t1',12),rep('t2',12)),
@@ -219,12 +218,12 @@ spcomp2$species <- factor(spcomp2$species,levels = colnames(beta2))
 gg_spcomp2 = ggplot(spcomp2) +
   geom_bar(stat='identity',aes(x=species,y=percent,fill=topic),
            position = position_dodge(width = .33)) +
-  scale_x_discrete(name='') +
+  scale_x_discrete(name='',breaks=levels(spcomp2$species),labels=rep('',12)) +
   scale_y_continuous(name='') +
   scale_fill_manual(values=cbPalette[c(1,3)]) +
   theme(legend.position = 'none',
         panel.border=element_rect(color='black',fill=NA),
-        axis.text.x=element_blank())
+        axis.text.x=element_text(size=8))
 
 
 spcomp3 = data.frame(topic=c(rep('t1',12),rep('t2',12)),
@@ -240,8 +239,7 @@ gg_spcomp3 = ggplot(spcomp3) +
   theme(legend.position = 'none',
         panel.border=element_rect(color='black',fill=NA),
         axis.text.x = element_text(size=8))
-      #  axis.text.x = element_blank())
-        #axis.text.x = element_text(angle = 0,hjust=.5,vjust=.5,size=10))
+gridExtra::grid.arrange(gg_spcomp1,gg_spcomp2,gg_spcomp3,nrow=1)
 
 #############################################################################################
 # Big figure
@@ -250,7 +248,8 @@ gg_spcomp3 = ggplot(spcomp3) +
   width = c(80,80,80),
   height = c(80,80,80),
   panel_label_type = "none",
-  column_spacing = 0))
+  column_spacing = 0,
+  row_spacing = 0))
 figure1 %<>% fill_panel(
   pop1,
   row = 1, column = 1)
