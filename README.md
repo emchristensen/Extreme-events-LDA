@@ -1,7 +1,8 @@
 # Extreme-events-LDA
-## Repo for holding code for working on LDA analysis of rodent data
+## "Long‐term community change through multiple rapid transitions in a desert rodent community"
 
-This repo contains the analyses for my project on rodent community change, currently up as a preprint: https://doi.org/10.1101/163931
+This repo contains the analyses for my project on rodent community change, now published in Ecology: https://doi.org/10.1002/ecy.2373
+
 
 ## Main Analysis Scripts: 
   * __rodent_LDA_analysis.R__ main script for analyzing rodent community change using LDA
