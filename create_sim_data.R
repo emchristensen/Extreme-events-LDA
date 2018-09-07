@@ -7,9 +7,15 @@
 #' 
 #' @return matrix with columns representing topics and rows representing time steps
 #' 
-create_sim_series = function(total_len,change_len,ntopics) {
+create_sim_series = function(total_len,change_len,ntopics,change_loc='mid') {
   
-  start_change = floor(total_len/2 - change_len/2)
+  if (change_loc=='mid') {
+    start_change = floor(total_len/2 - change_len/2)
+  } else if (change_loc=='early') {
+    start_change = floor(total_len/3 - change_len/2)
+  } else if (change_loc=='late') {
+    start_change = floor(total_len*2/3 - change_len/2)
+  }
   end_change = start_change + change_len
   
   sim_series = matrix(rep(0,total_len*ntopics),nrow=total_len,ncol=ntopics)

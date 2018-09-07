@@ -26,6 +26,7 @@ popplot
 
 # ==================================================
 # plot relative abundance?
+theme_set(theme_bw())
 relative = dat[,-22]/rowSums(dat[,-c(22)])
 
 relative$date = dates
